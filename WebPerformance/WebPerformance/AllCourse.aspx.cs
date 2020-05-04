@@ -24,7 +24,7 @@ public partial class AllCourse : System.Web.UI.Page
 
     protected void Image2_Command(object sender, CommandEventArgs e)
     {
-        Response.Redirect("Students.aspx");
+        Response.Redirect("HomePage.aspx");
     }
 
     protected void btnLogin_Click(object sender, EventArgs e)

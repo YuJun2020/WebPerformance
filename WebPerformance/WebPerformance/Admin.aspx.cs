@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
 
 public partial class Admin : System.Web.UI.Page
 {
@@ -18,7 +20,10 @@ public partial class Admin : System.Web.UI.Page
             gvCourse.DataSource = dsCourse;
             gvCourse.DataBind();
         }
-
+        if (Session["name"] == null || Session["name"] == "")
+        {
+            Response.Redirect("Login.aspx");
+        }
 
 
     }
@@ -27,7 +32,7 @@ public partial class Admin : System.Web.UI.Page
 
     protected void Image2_Command(object sender, CommandEventArgs e)
     {
-        Response.Redirect("Students.aspx");
+        Response.Redirect("HomePage.aspx");
     }
 
 
@@ -74,7 +79,7 @@ public partial class Admin : System.Web.UI.Page
         gvCourse.EditIndex = e.NewEditIndex;
         gvCourse.DataSource = dsCourse;
         gvCourse.DataBind();
-        
+
     }
 
     protected void gvCourse_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -83,10 +88,9 @@ public partial class Admin : System.Web.UI.Page
         int id = Convert.ToInt32(gvCourse.Rows[num].Cells[1].Text);
         String name = ((TextBox)(gvCourse.Rows[num].Cells[2].Controls[0])).Text;
         int credit = Convert.ToInt32(((TextBox)(gvCourse.Rows[num].Cells[3].Controls[0])).Text);
-        String cmd = Convert.ToString("Update course set name='"+name+"',credit='"+credit+"'where id='"+Convert.ToInt32(gvCourse.DataKeys[num].Value)+"'");
-      
-        String connectionString = "Data Source=localhost;database=performance;Integrated Security=True";
-        SqlConnection sqlConnection = new SqlConnection(connectionString);
+        String cmd = Convert.ToString("Update course set name='" + name + "',credit='" + credit + "'where id='" + Convert.ToInt32(gvCourse.DataKeys[num].Value) + "'");
+        String conn = ConfigurationManager.ConnectionStrings["performanceConnectionString"].ConnectionString;
+        SqlConnection sqlConnection = new SqlConnection(conn);
         try
         {
             sqlConnection.Open();
@@ -105,7 +109,7 @@ public partial class Admin : System.Web.UI.Page
 
     }
 
-    
+
 
     protected void gvCourse_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
     {
@@ -116,9 +120,9 @@ public partial class Admin : System.Web.UI.Page
 
     protected void gvCourse_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
-        String cmd = "Delete from course where id ="+Convert.ToInt32(gvCourse.DataKeys[e.RowIndex].Value);
-        String connectionString = "Data Source=localhost;database=performance;Integrated Security=True";
-        SqlConnection sqlConnection = new SqlConnection(connectionString);
+        String cmd = "Delete from course where id =" + Convert.ToInt32(gvCourse.DataKeys[e.RowIndex].Value);
+        String conn = ConfigurationManager.ConnectionStrings["performanceConnectionString"].ConnectionString;
+        SqlConnection sqlConnection = new SqlConnection(conn);
         try
         {
             sqlConnection.Open();

@@ -10,13 +10,13 @@ public partial class CourseDetails : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+
     }
 
 
     protected void Image2_Command(object sender, CommandEventArgs e)
     {
-        Response.Redirect("Students.aspx");
+        Response.Redirect("HomePage.aspx");
     }
 
     protected void btnLogin_Click(object sender, EventArgs e)
